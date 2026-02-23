@@ -2,7 +2,7 @@ export const personalInfo = {
   name: "Danush Kumar K",
   role: "Aspiring Backend Developer",
   tagline: "Java Developer | Upskilling Every Day",
-  description: "I'm a B.Tech IT student who loves building things with Java and React. I've solved 150+ problems on LeetCode, shipped a music streaming app during my internship, and I'm currently diving into Spring Boot and backend development. I spend most of my free time learning new tools and getting better at writing clean, production-ready code.",
+  description: "B.Tech IT student with a strong foundation in Core Java, OOP, and Data Structures. Built rule-based systems applying abstraction, inheritance, and polymorphism. Strong analytical and problem-solving skills with a focus on writing efficient, optimized solutions. Delivered production-ready React applications during a 3-month internship. Focused on backend development with Java for enterprise environments.",
   email: "danushkumark2006@gmail.com",
   location: "Chennai, Tamil Nadu, India",
   available: true,
