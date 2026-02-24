@@ -1,3 +1,6 @@
+import creditCardImg from "../assets/image.png";
+import musifyImg from "../assets/Musify.png";
+
 export const personalInfo = {
   name: "Danush Kumar K",
   role: "Backend Developer | Java & REST APIs",
@@ -43,7 +46,7 @@ export const projects = [
     id: 1,
     title: "Credit Card Recommendation & Eligibility System",
     description: "Designed a rule-based recommendation engine that matches users to optimal credit cards based on income, credit score, and spending patterns. Built with a deep OOP class hierarchy — abstract base classes, 4 specialized card subclasses (Travel, Cashback, Fuel, Premium), and a 6-condition rule engine using polymorphic dispatch. Emphasis on clean encapsulation, validated state, and custom exception handling.",
-    image: "/screenshots/credit-card-system.png",
+    image: creditCardImg,
     tags: ["Java", "OOP Design", "Rule Engine", "Polymorphism"],
     liveUrl: "#",
     githubUrl: "https://github.com/danushkumar01",
@@ -53,7 +56,7 @@ export const projects = [
     id: 2,
     title: "Musify - Music Streaming App",
     description: "Built a full-featured music streaming app to solve the problem of managing and playing audio from a cloud library. Architected 15+ modular React components across player, playlist, and navigation layers with centralized state management. Integrated Cloudinary for scalable audio storage and Firebase Hosting for deployment. Features real-time progress tracking, playlist CRUD, and responsive playback controls.",
-    image: "/screenshots/musify.png",
+    image: musifyImg,
     tags: ["React", "JavaScript", "Tailwind CSS", "Firebase", "Cloudinary"],
     liveUrl: "https://musify-f479f.web.app/",
     githubUrl: "https://github.com/danushkumar01/Musify_Project",
