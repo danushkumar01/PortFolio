@@ -52,6 +52,9 @@ const skillIconMap = {
   "MongoDB": Database,
   "SQL": Database,
   "MySQL": Database,
+  "SQL / MySQL": Database,
+  "OOP & Design Patterns": Brain,
+  "REST API Development": Plug,
   "Firebase": Flame,
   "REST APIs": Plug,
   "REST API": Plug,
@@ -69,9 +72,18 @@ const skillIconMap = {
   "Docker": Box,
 };
 
+function ResponsiveIcon({ icon: Icon, sm, md, className = "" }) {
+  return (
+    <>
+      <Icon size={sm} className={`sm:hidden ${className}`} />
+      <Icon size={md} className={`hidden sm:block ${className}`} />
+    </>
+  );
+}
+
 function GradientBackground() {
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <motion.div
         className="gradient-blob gradient-blob-1"
         animate={{
@@ -147,6 +159,7 @@ function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
+      aria-label="Main navigation"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-black/90 backdrop-blur-md border-b border-neutral-800" : "bg-transparent"
       }`}
@@ -177,8 +190,10 @@ function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-white p-2 -mr-2"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -232,9 +247,8 @@ function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           className="mb-6 sm:mb-8"
         >
-          <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-full bg-linear-to-br from-neutral-700 to-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl">
-            <User size={36} className="text-neutral-400 sm:hidden" />
-            <User size={48} className="text-neutral-400 hidden sm:block" />
+          <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto rounded-full bg-linear-to-br from-neutral-700 to-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl" aria-hidden="true">
+            <ResponsiveIcon icon={User} sm={36} md={48} className="text-neutral-400" />
           </div>
         </motion.div>
 
@@ -290,6 +304,14 @@ function Hero() {
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </a>
           <a
+            href={personalInfo.resumeUrl}
+            download
+            className="group w-full sm:w-auto px-6 sm:px-8 py-3 bg-transparent border border-neutral-700 text-white font-medium rounded-full hover:bg-neutral-900 hover:border-neutral-600 transition-all flex items-center justify-center gap-2"
+          >
+            <Download size={16} />
+            Download Resume
+          </a>
+          <a
             href="#contact"
             className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-transparent border border-neutral-700 text-white font-medium rounded-full hover:bg-neutral-900 hover:border-neutral-600 transition-all text-center"
           >
@@ -311,7 +333,8 @@ function Hero() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 border border-neutral-800 rounded-full text-neutral-500 hover:text-white hover:border-neutral-600 transition-all"
+                aria-label={link.name}
+                className="p-3.5 border border-neutral-800 rounded-full text-neutral-500 hover:text-white hover:border-neutral-600 transition-all"
               >
                 {Icon && <Icon size={18} />}
               </a>
@@ -325,6 +348,7 @@ function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        aria-hidden="true"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
@@ -347,7 +371,7 @@ function About() {
 
   return (
     <section id="about" className="py-16 sm:py-24 bg-black relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-neutral-800 to-transparent" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
         <motion.div
@@ -357,8 +381,7 @@ function About() {
           className="text-center mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 text-neutral-500 text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4">
-            <User size={14} className="sm:hidden" />
-            <User size={16} className="hidden sm:block" />
+            <ResponsiveIcon icon={User} sm={14} md={16} />
             Get to know me
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-white mb-3 sm:mb-4 tracking-tight">About Me</h2>
@@ -371,13 +394,14 @@ function About() {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center"
         >
-          <p className="text-base sm:text-lg text-neutral-400 leading-relaxed mb-6 sm:mb-8 px-2">
-            {personalInfo.description}
-          </p>
+          {personalInfo.aboutParagraphs.map((para, i) => (
+            <p key={i} className="text-base sm:text-lg text-neutral-400 leading-relaxed mb-4 sm:mb-6 px-2">
+              {para}
+            </p>
+          ))}
           
           <div className="flex items-center justify-center gap-2 text-neutral-500 mb-8 sm:mb-12">
-            <MapPin size={16} className="sm:hidden" />
-            <MapPin size={18} className="hidden sm:block" />
+            <ResponsiveIcon icon={MapPin} sm={16} md={18} />
             <span className="text-sm sm:text-base">{personalInfo.location}</span>
           </div>
 
@@ -391,8 +415,7 @@ function About() {
                 transition={{ delay: index * 0.1 }}
                 className="p-3 sm:p-6 bg-neutral-900/50 border border-neutral-800 rounded-xl sm:rounded-2xl hover:border-neutral-700 transition-colors"
               >
-                <item.icon size={20} className="mx-auto mb-2 sm:mb-3 text-neutral-500 sm:hidden" />
-                <item.icon size={24} className="mx-auto mb-2 sm:mb-3 text-neutral-500 hidden sm:block" />
+                <ResponsiveIcon icon={item.icon} sm={20} md={24} className="mx-auto mb-2 sm:mb-3 text-neutral-500" />
                 <div className="text-lg sm:text-2xl font-bold text-white mb-0.5 sm:mb-1">{item.value}</div>
                 <div className="text-[10px] sm:text-xs text-neutral-500 uppercase tracking-wider">{item.label}</div>
               </motion.div>
@@ -409,8 +432,8 @@ function Skills() {
 
   return (
     <section id="skills" className="py-16 sm:py-24 bg-black/80 section-glow relative">
-      <div className="hidden sm:block absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.08),transparent)] pointer-events-none" />
-      <div className="hidden sm:block absolute top-1/2 right-0 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08),transparent)] pointer-events-none" />
+      <div className="hidden sm:block absolute top-1/2 left-0 -translate-y-1/2 w-100 h-100 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.08),transparent)] pointer-events-none" />
+      <div className="hidden sm:block absolute top-1/2 right-0 -translate-y-1/2 w-100 h-100 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08),transparent)] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
         <motion.div
@@ -420,15 +443,14 @@ function Skills() {
           className="text-center mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 text-neutral-500 text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4">
-            <Wrench size={14} className="sm:hidden" />
-            <Wrench size={16} className="hidden sm:block" />
+            <ResponsiveIcon icon={Wrench} sm={14} md={16} />
             What I work with
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-white mb-3 sm:mb-4 tracking-tight">Skills & Technologies</h2>
           <div className="w-12 sm:w-16 h-0.5 bg-white mx-auto" />
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {categories.map((category, catIndex) => {
             const CategoryIcon = categoryIconMap[category] || Code2;
             return (
@@ -442,8 +464,7 @@ function Skills() {
               >
                 <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                   <div className="p-1.5 sm:p-2 bg-neutral-800 rounded-lg">
-                    <CategoryIcon size={16} className="text-neutral-400 sm:hidden" />
-                    <CategoryIcon size={20} className="text-neutral-400 hidden sm:block" />
+                    <ResponsiveIcon icon={CategoryIcon} sm={16} md={20} className="text-neutral-400" />
                   </div>
                   <h3 className="text-xs sm:text-sm font-medium text-white uppercase tracking-wider">{category}</h3>
                 </div>
@@ -458,8 +479,7 @@ function Skills() {
                           whileHover={{ scale: 1.05, y: -2 }}
                           className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-neutral-800/50 border border-neutral-700/50 rounded-full text-xs sm:text-sm text-neutral-300 hover:bg-neutral-800 hover:text-white hover:border-neutral-600 transition-all cursor-default"
                         >
-                          <SkillIcon size={12} className="text-neutral-500 sm:hidden" />
-                          <SkillIcon size={14} className="text-neutral-500 hidden sm:block" />
+                          <ResponsiveIcon icon={SkillIcon} sm={12} md={14} className="text-neutral-500" />
                           {skill.name}
                         </motion.span>
                       );
@@ -477,7 +497,7 @@ function Skills() {
 function Projects() {
   return (
     <section id="projects" className="py-16 sm:py-24 bg-neutral-950/80 section-glow relative">
-      <div className="hidden sm:block absolute top-20 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(236,72,153,0.06),transparent)] pointer-events-none" />
+      <div className="hidden sm:block absolute top-20 right-1/4 w-125 h-125 bg-[radial-gradient(ellipse_at_center,rgba(236,72,153,0.06),transparent)] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
         <motion.div
@@ -487,15 +507,14 @@ function Projects() {
           className="text-center mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 text-neutral-500 text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4">
-            <FolderKanban size={14} className="sm:hidden" />
-            <FolderKanban size={16} className="hidden sm:block" />
+            <ResponsiveIcon icon={FolderKanban} sm={14} md={16} />
             My recent work
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-white mb-3 sm:mb-4 tracking-tight">Featured Projects</h2>
           <div className="w-12 sm:w-16 h-0.5 bg-white mx-auto" />
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -503,19 +522,23 @@ function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="group bg-neutral-900 border border-neutral-800 rounded-xl sm:rounded-2xl overflow-hidden hover:border-neutral-700 transition-all"
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group bg-neutral-900 border border-neutral-800 rounded-xl sm:rounded-2xl overflow-hidden hover:border-neutral-600 hover:shadow-lg hover:shadow-neutral-900/50 transition-all duration-300"
             >
               {project.image && (
                 <div className="h-40 sm:h-48 bg-neutral-800 relative overflow-hidden">
-                  <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                  <img src={project.image} alt={`Screenshot of ${project.title}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                  {project.featured && (
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-white/10 backdrop-blur-sm rounded-full" aria-label="Featured project">
+                      <Sparkles size={14} className="text-neutral-300" />
+                    </div>
+                  )}
                 </div>
               )}
               {!project.image && (
                 <div className="h-40 sm:h-48 bg-linear-to-br from-neutral-800 to-neutral-900 flex items-center justify-center relative overflow-hidden">
-                  <FolderKanban size={40} className="text-neutral-700 group-hover:scale-110 transition-transform sm:hidden" />
-                  <FolderKanban size={48} className="text-neutral-700 group-hover:scale-110 transition-transform hidden sm:block" />
+                  <ResponsiveIcon icon={FolderKanban} sm={40} md={48} className="text-neutral-700 group-hover:scale-110 transition-transform" />
                   {project.featured && (
                     <div className="absolute top-3 right-3 px-2 py-1 bg-white/10 backdrop-blur-sm rounded-full">
                       <Sparkles size={14} className="text-neutral-400" />
@@ -526,7 +549,7 @@ function Projects() {
               
               <div className="p-4 sm:p-6">
                 <h3 className="text-lg sm:text-xl font-semibold text-white mb-1.5 sm:mb-2 group-hover:text-neutral-200">{project.title}</h3>
-                <p className="text-neutral-500 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{project.description}</p>
+                <p className="text-neutral-500 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3">{project.description}</p>
                 
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                   {project.tags.map((tag) => (
@@ -545,10 +568,10 @@ function Projects() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-neutral-400 hover:text-white transition-colors px-2 sm:px-3 py-1 sm:py-1.5 rounded-full hover:bg-neutral-800"
+                      aria-label={`View source code for ${project.title}`}
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-neutral-400 hover:text-white transition-colors px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-neutral-800"
                     >
-                      <Github size={12} className="sm:hidden" />
-                      <Github size={14} className="hidden sm:block" />
+                      <ResponsiveIcon icon={Github} sm={12} md={14} />
                       <span>Source</span>
                     </a>
                   )}
@@ -557,10 +580,10 @@ function Projects() {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-neutral-400 hover:text-white transition-colors px-2 sm:px-3 py-1 sm:py-1.5 rounded-full hover:bg-neutral-800"
+                      aria-label={`Live preview of ${project.title}`}
+                      className="flex items-center gap-1.5 text-xs sm:text-sm text-neutral-400 hover:text-white transition-colors px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-neutral-800"
                     >
-                      <Eye size={12} className="sm:hidden" />
-                      <Eye size={14} className="hidden sm:block" />
+                      <ResponsiveIcon icon={Eye} sm={12} md={14} />
                       <span>Preview</span>
                     </a>
                   )}
@@ -577,7 +600,7 @@ function Projects() {
 function Contact() {
   return (
     <section id="contact" className="py-16 sm:py-24 bg-black/80 section-glow relative">
-      <div className="hidden sm:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.1),transparent)] pointer-events-none" />
+      <div className="hidden sm:block absolute bottom-0 left-1/2 -translate-x-1/2 w-150 h-100 bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.1),transparent)] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
         <motion.div
@@ -587,8 +610,7 @@ function Contact() {
           className="text-center mb-10 sm:mb-16"
         >
           <span className="inline-flex items-center gap-2 text-neutral-500 text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4">
-            <MessageCircle size={14} className="sm:hidden" />
-            <MessageCircle size={16} className="hidden sm:block" />
+            <ResponsiveIcon icon={MessageCircle} sm={14} md={16} />
             Let's connect
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading text-white mb-3 sm:mb-4 tracking-tight">Get In Touch</h2>
@@ -602,21 +624,22 @@ function Contact() {
           className="max-w-xl mx-auto text-center"
         >
           <div className="p-5 sm:p-8 bg-neutral-900/50 border border-neutral-800 rounded-xl sm:rounded-2xl mb-6 sm:mb-8">
-            <MessageCircle size={24} className="mx-auto mb-3 sm:mb-4 text-neutral-500 sm:hidden" />
-            <MessageCircle size={32} className="mx-auto mb-3 sm:mb-4 text-neutral-500 hidden sm:block" />
+            <ResponsiveIcon icon={MessageCircle} sm={24} md={32} className="mx-auto mb-3 sm:mb-4 text-neutral-500" />
             <p className="text-sm sm:text-base text-neutral-400">
-              I'm always open to new opportunities and collaborations. Feel free to reach out!
+              Open to backend internships and developer roles. Let's build something great together.
             </p>
           </div>
           
-          <a
-            href={`mailto:${personalInfo.email}`}
-            className="inline-flex items-center gap-2 px-5 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-sm sm:text-base font-medium rounded-full hover:bg-neutral-200 transition-colors"
-          >
-            <Mail size={16} className="sm:hidden" />
-            <Mail size={18} className="hidden sm:block" />
-            <span className="truncate max-w-[200px] sm:max-w-none">{personalInfo.email}</span>
-          </a>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+            <a
+              href={`mailto:${personalInfo.email}`}
+              aria-label="Send email"
+              className="inline-flex items-center gap-2 px-5 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-sm sm:text-base font-medium rounded-full hover:bg-neutral-200 transition-colors"
+            >
+              <ResponsiveIcon icon={Mail} sm={16} md={18} />
+              <span className="truncate max-w-50 sm:max-w-none">{personalInfo.email}</span>
+            </a>
+          </div>
 
           <div className="flex gap-3 sm:gap-4 justify-center mt-8 sm:mt-10">
             {socialLinks.map((link) => {
@@ -627,7 +650,8 @@ function Contact() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 border border-neutral-800 rounded-full text-neutral-500 hover:text-white hover:border-neutral-600 transition-all"
+                  aria-label={link.name}
+                  className="p-3.5 border border-neutral-800 rounded-full text-neutral-500 hover:text-white hover:border-neutral-600 transition-all"
                 >
                   {Icon && <Icon size={18} />}
                 </a>
@@ -669,7 +693,8 @@ function ScrollToTop() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-8 right-8 p-3 bg-white text-black rounded-full shadow-lg hover:bg-neutral-200 transition-colors z-50"
+          aria-label="Scroll to top"
+          className="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 p-3 bg-white text-black rounded-full shadow-lg hover:bg-neutral-200 transition-colors z-50"
         >
           <ChevronUp size={24} />
         </motion.button>

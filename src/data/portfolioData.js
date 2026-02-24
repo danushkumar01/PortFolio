@@ -1,11 +1,15 @@
 export const personalInfo = {
   name: "Danush Kumar K",
-  role: "Aspiring Backend Developer",
-  tagline: "Java Developer | Upskilling Every Day",
-  description: "B.Tech IT student with a strong foundation in Core Java, OOP, and Data Structures. Built rule-based systems applying abstraction, inheritance, and polymorphism. Strong analytical and problem-solving skills with a focus on writing efficient, optimized solutions. Delivered production-ready React applications during a 3-month internship. Focused on backend development with Java for enterprise environments.",
+  role: "Backend Developer | Java & REST APIs",
+  tagline: "I build scalable backend systems using Java, OOP principles, and RESTful APIs.",
+  aboutParagraphs: [
+    "I'm a backend-focused developer who enjoys designing clean, maintainable systems. My core strength is Java — from object-oriented architecture and design patterns to building rule-based engines and REST APIs. I think in terms of structure, hierarchy, and how components talk to each other.",
+    "I also build frontend interfaces with React and Tailwind CSS, which gives me a full-picture understanding of how users interact with the systems I design. Right now, I'm deepening my skills in Spring Boot, microservices, and containerization with Docker."
+  ],
   email: "danushkumark2006@gmail.com",
   location: "Chennai, Tamil Nadu, India",
   available: true,
+  resumeUrl: "/DanushKumarK Resume.pdf",
 };
 
 export const socialLinks = [
@@ -22,21 +26,14 @@ export const socialLinks = [
 ];
 
 export const skills = [
-  { name: "Core Java", category: "Backend" },
-  { name: "OOP Principles", category: "Backend" },
-  { name: "Collections Framework", category: "Backend" },
-  { name: "Exception Handling", category: "Backend" },
+  { name: "Java", category: "Backend" },
+  { name: "OOP & Design Patterns", category: "Backend" },
+  { name: "REST API Development", category: "Backend" },
+  { name: "SQL / MySQL", category: "Backend" },
   { name: "React", category: "Frontend" },
   { name: "JavaScript (ES6+)", category: "Frontend" },
-  { name: "HTML5", category: "Frontend" },
-  { name: "CSS3", category: "Frontend" },
   { name: "Tailwind CSS", category: "Frontend" },
-  { name: "REST APIs", category: "Frontend" },
-  { name: "SQL", category: "Database" },
-  { name: "MySQL", category: "Database" },
-  { name: "Spring", category: "Currently Learning" },
   { name: "Spring Boot", category: "Currently Learning" },
-  { name: "REST API", category: "Currently Learning" },
   { name: "Microservices", category: "Currently Learning" },
   { name: "Docker", category: "Currently Learning" },
 ];
@@ -45,9 +42,9 @@ export const projects = [
   {
     id: 1,
     title: "Credit Card Recommendation & Eligibility System",
-    description: "Architected a 10+ class system using abstract classes, inheritance hierarchy, and polymorphic method dispatch. Implemented 4 card subclasses (TravelCard, CashbackCard, FuelCard, PremiumCard) with RecommendationEngine using 6-condition rule-based algorithm. Features encapsulation, validated getters/setters, and robust error handling with custom exceptions.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-    tags: ["Core Java", "OOP Design", "Inheritance", "Polymorphism"],
+    description: "Designed a rule-based recommendation engine that matches users to optimal credit cards based on income, credit score, and spending patterns. Built with a deep OOP class hierarchy — abstract base classes, 4 specialized card subclasses (Travel, Cashback, Fuel, Premium), and a 6-condition rule engine using polymorphic dispatch. Emphasis on clean encapsulation, validated state, and custom exception handling.",
+    image: "/screenshots/credit-card-system.png",
+    tags: ["Java", "OOP Design", "Rule Engine", "Polymorphism"],
     liveUrl: "#",
     githubUrl: "https://github.com/danushkumar01",
     featured: true,
@@ -55,22 +52,12 @@ export const projects = [
   {
     id: 2,
     title: "Musify - Music Streaming App",
-    description: "Architected a modular component structure with 15+ reusable React components for player, playlist, and navigation modules. Integrated Cloudinary API for cloud-based audio storage and streaming. Features custom audio player with play/pause, next/previous track controls, real-time progress tracking, and playlist state management. Deployed on Firebase Hosting with responsive design.",
-    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=800&q=80",
+    description: "Built a full-featured music streaming app to solve the problem of managing and playing audio from a cloud library. Architected 15+ modular React components across player, playlist, and navigation layers with centralized state management. Integrated Cloudinary for scalable audio storage and Firebase Hosting for deployment. Features real-time progress tracking, playlist CRUD, and responsive playback controls.",
+    image: "/screenshots/musify.png",
     tags: ["React", "JavaScript", "Tailwind CSS", "Firebase", "Cloudinary"],
     liveUrl: "https://musify-f479f.web.app/",
     githubUrl: "https://github.com/danushkumar01/Musify_Project",
     featured: true,
-  },
-  {
-    id: 3,
-    title: "Portfolio Website",
-    description: "A modern, responsive portfolio website built with React and Tailwind CSS. Features smooth animations powered by Framer Motion and a clean, professional design.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-    tags: ["React", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "#",
-    githubUrl: "https://github.com/danushkumar01",
-    featured: false,
   },
 ];
 
