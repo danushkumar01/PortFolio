@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Menu, X, Github, Linkedin, Twitter, Mail, ExternalLink, MapPin, ChevronUp, ArrowRight,
+  Menu, X, Github, Linkedin, Twitter, Mail, MapPin, ChevronUp, ArrowRight,
   Home, User, Wrench, FolderKanban, MessageCircle, Code2, Palette, Database, Terminal,
-  Briefcase, GraduationCap, Coffee, Sparkles, Download, Eye, Heart,
-  Atom, FileCode, FileJson, Globe, Wind, Server, GitBranch, MonitorSmartphone, PenTool, 
-  Users, Brain, Clock, Lightbulb, MessageSquare, Zap, Flame, Network, Plug, CloudCog,
+  Coffee, Sparkles, Download, Eye, Heart,
+  Atom, FileCode, FileJson, Globe, Wind, Server, GitBranch, PenTool, 
+  Users, Brain, Clock, Lightbulb, MessageSquare, Zap, Flame, Network, Plug,
   Leaf, Rocket, Box
 } from "lucide-react";
 import { personalInfo, socialLinks, skills, projects, navLinks } from "./data/portfolioData";
@@ -40,6 +40,7 @@ const categoryIconMap = {
 const skillIconMap = {
   "React": Atom,
   "JavaScript": FileJson,
+  "JavaScript (ES6+)": FileJson,
   "TypeScript": FileCode,
   "HTML/CSS": Globe,
   "Tailwind CSS": Wind,
@@ -155,78 +156,126 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
+    // Small delay to let menu close before scrolling
+    setTimeout(() => {
+      const target = document.querySelector(href);
+      if (target) {
+        const navHeight = 64;
+        const top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }, 100);
+  };
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      aria-label="Main navigation"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-black/90 backdrop-blur-md border-b border-neutral-800" : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-        <motion.a
-          href="#home"
-          className="text-lg sm:text-xl font-bold text-white"
-          whileHover={{ scale: 1.05 }}
-        >
-          {personalInfo.name.split(" ")[0]}<span className="text-neutral-500">.</span>
-        </motion.a>
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        aria-label="Main navigation"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled || isOpen ? "bg-black/90 backdrop-blur-md border-b border-neutral-800" : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <motion.a
+            href="#home"
+            className="text-lg sm:text-xl font-bold text-white relative z-50"
+            whileHover={{ scale: 1.05 }}
+            onClick={(e) => handleNavClick(e, "#home")}
+          >
+            {personalInfo.name.split(" ")[0]}<span className="text-neutral-500">.</span>
+          </motion.a>
 
-        <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => {
-            const NavIcon = navIconMap[link.name];
-            return (
-              <a
-                key={link.name}
-                href={link.href}
-                className="flex items-center gap-1.5 text-sm text-neutral-400 hover:text-white transition-colors group"
-              >
-                {NavIcon && <NavIcon size={14} className="opacity-50 group-hover:opacity-100 transition-opacity" />}
-                {link.name}
-              </a>
-            );
-          })}
+          <div className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => {
+              const NavIcon = navIconMap[link.name];
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="flex items-center gap-1.5 text-sm text-neutral-400 hover:text-white transition-colors group"
+                >
+                  {NavIcon && <NavIcon size={14} className="opacity-50 group-hover:opacity-100 transition-opacity" />}
+                  {link.name}
+                </a>
+              );
+            })}
+          </div>
+
+          <button
+            className="md:hidden text-white p-2 -mr-2 relative z-50 touch-manipulation"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+      </motion.nav>
 
-        <button
-          className="md:hidden text-white p-2 -mr-2"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
+      {/* Full-screen mobile menu overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/95 backdrop-blur-md border-b border-neutral-800"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 md:hidden"
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
-              {navLinks.map((link) => {
-                const NavIcon = navIconMap[link.name];
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors py-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {NavIcon && <NavIcon size={18} />}
-                    {link.name}
-                  </a>
-                );
-              })}
-            </div>
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Menu panel */}
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="absolute top-14 left-0 right-0 bg-neutral-950/95 backdrop-blur-md border-b border-neutral-800 shadow-2xl"
+            >
+              <div className="px-6 py-6 flex flex-col gap-2">
+                {navLinks.map((link, index) => {
+                  const NavIcon = navIconMap[link.name];
+                  return (
+                    <motion.a
+                      key={link.name}
+                      href={link.href}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: index * 0.05, duration: 0.2 }}
+                      className="flex items-center gap-3 text-neutral-300 hover:text-white active:text-white transition-colors py-3 px-3 rounded-lg hover:bg-neutral-800/50 active:bg-neutral-800/50 touch-manipulation"
+                      onClick={(e) => handleNavClick(e, link.href)}
+                    >
+                      {NavIcon && <NavIcon size={20} className="text-neutral-500" />}
+                      <span className="text-base font-medium">{link.name}</span>
+                    </motion.a>
+                  );
+                })}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 }
 
